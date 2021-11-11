@@ -1,40 +1,45 @@
+#' Adjacency Spectral Embedding
+#'
+#' Adjacency spectral embedding of undirected graph with adjacency matrix A.
+#'
+#'
+#' @param A The adjacency matrix of the graph to be embedded
+#' @param p Number of positive assortative to use
+#' @param q Number of negative disassortative to use
+#' @param scale Whether to scale the embedding by the eigenvalues
+#'
+#' @return An nrow(A) by (p+q) matrix of embedded points
+#' @export
+#'
+#' @examples
+#' # generate a small homogeneous SBM with two communities
+#' n1 <- 20
+#' n2 <- 20
+#' n <- n1 + n2
+#' p.within <- .5
+#' q.between <- .1
+#' P <- matrix(p.between, nrow = n, ncol = n)
+#' P[seq(n1), seq(n1)] <- p.within
+#' P[seq(n1 + 1, n), seq(n1 + 1, n)] <- p.within
+#' A <- osc::draw.graph(P)
+#'
+#' # embed A in two assortative dimensions
+#' X <- ase(A, 2, 0)
+#' # the embedding will consist of points around two point masses
+#' plot(X)
 ase <- function(A, p = 2, q = 0,
-                scale = TRUE,
-                eps = 1e-6) {
+                scale = TRUE) {
 
   # make sure function arguments are valid
   # and make changes if necessary
   Apq <- .ase.checks(A, p, q)
   A <- Apq$A
+  n <- Apq$n
   p <- Apq$p
   q <- Apq$q
 
-  # determine the number of elements of A
-  n <- nrow(A)
-
-  # compute the spectral decomposition of A
-  eigen.A <- eigen(A, symmetric = TRUE)
-
-  # take the p most positive and q most negative eigenvectors
-  if (p * q > 0) {
-    keep <- c(seq(p), seq(n, n - q + 1))
-  } else if (p == 0) {
-    keep <- seq(n, n - q + 1)
-  } else {
-    keep <- seq(p)
-  }
-  U <- eigen.A$vectors[, keep]
-
-  # if we are scaling the embedding,
-  # multiply by the square roots of the corresponding eigenvalues
-  # otherwise normalize by the square root of the sample size
-  if (scale) {
-    S <- diag(sqrt(abs(eigen.A$values[keep])))
-    X <- U %*% S
-  } else {
-    # this is to ensure that the entries of U do not vanish as n -> Inf
-    X <- U * sqrt(n)
-  }
+  # embed
+  X <- .ase(A, n, p, q, scale)
 
   return(X)
 }
@@ -73,7 +78,7 @@ ase <- function(A, p = 2, q = 0,
   }
 
   # verify the embedding dimensions are valid
-  if (p * q <= 0 | p + q <= 0) {
+  if (p * q < 0 | p + q <= 0) {
     stop('One of p or q must be > nonzero, and both p and q must be positive')
   }
 
@@ -99,9 +104,40 @@ ase <- function(A, p = 2, q = 0,
   }
 
   # make sure p + q < n
-  if (nrow(A) <= p + q) {
+  n <- nrow(A)
+  if (n <= p + q) {
     stop('embedding dimensions must be less than the sample size')
   }
 
-  return(list(A = A, p = p, q = q))
+  return(list(A = A, n = n, p = p, q = q))
+}
+
+.ase <- function(A, n, p, q, scale = TRUE) {
+  # base adjacency spectral embedding function without checks
+
+  # compute the spectral decomposition of A
+  eigen.A <- eigen(A, symmetric = TRUE)
+
+  # take the p most positive and q most negative eigenvectors
+  if (p * q > 0) {
+    keep <- c(seq(p), seq(n, n - q + 1))
+  } else if (p == 0) {
+    keep <- seq(n, n - q + 1)
+  } else {
+    keep <- seq(p)
+  }
+  U <- eigen.A$vectors[, keep]
+
+  # if we are scaling the embedding,
+  # multiply by the square roots of the corresponding eigenvalues
+  # otherwise normalize by the square root of the sample size
+  if (scale) {
+    S <- diag(sqrt(abs(eigen.A$values[keep])))
+    X <- U %*% S
+  } else {
+    # this is to ensure that the entries of U do not vanish as n -> Inf
+    X <- U * sqrt(n)
+  }
+
+  return(X)
 }
