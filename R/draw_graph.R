@@ -1,7 +1,7 @@
 #' Draw the adjacency matrix of a graph from edge probability matrix P.
 #'
 #' Independently draw \eqn{A[i, j] ~ F(P[i, j])} for distribution F and i > j.
-#' A is then forced to be symmetric.
+#' A is then symmetrized.
 #'
 #' @param P The symmetric edge probability matrix from which
 #'   we are sampling the graph
@@ -26,9 +26,7 @@
 #' # visualize
 #' qgraph::qgraph(A, layout = 'spring')
 draw.graph <- function(P,
-                       distribution = c('bernoulli',
-                                        'poisson',
-                                        'exponential')) {
+                       distribution = 'bernoulli') {
   # verify that the parameters are valid
   valid.params <- .draw.graph.checks(P, distribution)
   P <- valid.params$P

@@ -4,8 +4,8 @@
 #'
 #'
 #' @param A The adjacency matrix of the graph to be embedded
-#' @param p Number of positive assortative to use
-#' @param q Number of negative disassortative to use
+#' @param p Number of assortative dimensions
+#' @param q Number of disassortative dimensions
 #' @param scale Whether to scale the embedding by the eigenvalues
 #'
 #' @return An nrow(A) by (p+q) matrix of embedded points
@@ -27,7 +27,7 @@
 #' X <- ase(A, 2, 0)
 #' # the embedding will consist of points around two point masses
 #' plot(X)
-ase <- function(A, p = 2, q = 0,
+ase <- function(A, p = 2L, q = 0L,
                 scale = TRUE) {
 
   # make sure function arguments are valid
@@ -44,16 +44,51 @@ ase <- function(A, p = 2, q = 0,
   return(X)
 }
 
-.ase.checks <- function(A, p, q) {
-  # helper function for verifying that A, p, and q are valid
+.check.adj.matrix <- function(A) {
+  # helper function for verifying that A is valid
 
-  # verify A is a matrix and p and q are integers
+  # verify that A is a matrix
   if (!('matrix' %in% class(A))) {
     stop('A must be a matrix')
   }
   if (!(typeof(A) %in% c('integer', 'double'))) {
     stop('A must be numeric')
   }
+
+  # verify A is square
+  dim.A <- dim(A)
+  if (diff(dim.A) != 0) {
+    stop('A must be a square matrix')
+  }
+
+  # verify A is symmetric
+  if (any(A != t(A))) {
+    stop('A must be symmetric')
+  }
+
+  # verify entries of A are nonnegative
+  if (any(A < 0)) {
+    stop('A must contain only nonnegative entries')
+  }
+
+  # force the graph to have no self loops
+  if (any(diag(A) != 0)) {
+    warning('A is not hollow')
+  }
+
+  return(list(A = A,
+              n = dim.A[1]))
+}
+
+.ase.checks <- function(A, p, q) {
+  # helper function for verifying that A, p, and q are valid
+
+  # verify A
+  A.n <- .check.adj.matrix(A)
+  A <- A.n$A
+  n <- A.n$n
+
+  # verify p and q are integers
   if (class(p) != 'integer') {
     if (class(p) == 'numeric') {
       p <- as.integer(p)
@@ -82,29 +117,7 @@ ase <- function(A, p = 2, q = 0,
     stop('One of p or q must be > nonzero, and both p and q must be positive')
   }
 
-  # verify A is square
-  if (diff(dim(A)) != 0) {
-    stop('A must be a square matrix')
-  }
-
-  # verify A is symmetric
-  if (any(A != t(A))) {
-    stop('A must be symmetric')
-  }
-
-  # verify entries of A are nonnegative
-  if (any(A < 0)) {
-    stop('A must contain only nonnegative entries')
-  }
-
-  # force the graph to have no self loops
-  if (any(diag(A) != 0)) {
-    warning('forcing A to be hollow')
-    diag(A) <- 0
-  }
-
   # make sure p + q < n
-  n <- nrow(A)
   if (n <= p + q) {
     stop('embedding dimensions must be less than the sample size')
   }
@@ -112,7 +125,7 @@ ase <- function(A, p = 2, q = 0,
   return(list(A = A, n = n, p = p, q = q))
 }
 
-.ase <- function(A, n, p, q, scale = TRUE) {
+.ase <- function(A, n, p, q, scale) {
   # base adjacency spectral embedding function without checks
 
   # compute the spectral decomposition of A
