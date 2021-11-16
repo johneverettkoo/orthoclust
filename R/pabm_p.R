@@ -77,40 +77,29 @@ pabm.edge.probability.matrix <- function(groups,
   # initialize
   P <- matrix(NA, n, n)
 
-  # sort the group labels to make construction of P more straightforward
-  sort.groups <- sort(groups)
-
   # fill in P by group
   for (k in seq(K)) {
-    # determine the size of this group
-    n.k <- n.group[k]
-
-    # index range of P for this group (after sorting)
-    low.ind.k <- ifelse(k == 1, 1, sum(n.group[seq(k - 1)]) + 1)
-    high.ind.k <- sum(n.group[seq(k)])
-
     for (l in seq(k)) {
-      n.l <- n.group[l]
-
       # if this is within-group
       if (k == l) {
-        lambda <- popularity.params[sort.groups == k, k]
+        # extract the popularity params
+        lambda <- popularity.params[groups == k, k]
+
+        # construct the edge probabiliy block
         P.kk <- tcrossprod(lambda)
-        P[seq(low.ind.k, high.ind.k), seq(low.ind.k, high.ind.k)] <- P.kk
-        # between-group
+        P[groups == k, groups == k] <- P.kk
+      # between-group
       } else {
-        low.ind.l <- ifelse(l == 1, 1, sum(n.group[seq(l - 1)]) + 1)
-        high.ind.l <- sum(n.group[seq(l)])
-        lambda.kl <- popularity.params[sort.groups == k, l]
-        lambda.lk <- popularity.params[sort.groups == l, k]
+        # extract the popularity params
+        lambda.kl <- popularity.params[groups == k, l]
+        lambda.lk <- popularity.params[groups == l, k]
+
+        # construct the edge probability block
         P.kl <- tcrossprod(lambda.kl, lambda.lk)
-        P[seq(low.ind.k, high.ind.k), seq(low.ind.l, high.ind.l)] <- P.kl
-        P[seq(low.ind.l, high.ind.l), seq(low.ind.k, high.ind.k)] <- t(P.kl)
+        P[groups == k, groups == l] <- P.kl
+        P[groups == l, groups == k] <- t(P.kl)
       }
     }
   }
-
-  P <- P[order(groups), order(groups)]
-
   return(P)
 }
