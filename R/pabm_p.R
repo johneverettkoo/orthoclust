@@ -1,3 +1,18 @@
+#' Construct the edge probability matrix for a PABM
+#'
+#' @param groups A vector of group labels.
+#' @param popularity.params An n by K matrix of popularity parameters.
+#'   \expr{popularity.params[i, k]} is vertex i's affinity to community k.
+#'
+#' @return The n by n edge probability matrix.
+#' @export
+#'
+#' @examples
+#' # set the size of each group
+#' n1 <- 100
+#' n2 <- 100
+#' n3 <- 100
+#' n <- n1 + n2 + n3
 pabm.edge.probability.matrix <- function(groups,
                                          popularity.params) {
   # check that the group labels are valid
