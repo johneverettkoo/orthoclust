@@ -5,7 +5,6 @@
 #'   \expr{popularity.params[i, k]} is vertex i's affinity to community k.
 #'
 #' @return The n by n edge probability matrix.
-#' @export
 #'
 #' @examples
 #' # set the size of each group

@@ -3,3 +3,5 @@
 export(ase)
 export(compute.affinity.matrix)
 export(draw.graph)
+export(osc)
+import(mclust)

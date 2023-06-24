@@ -5,8 +5,8 @@
 #' @param model Type of block model (SBM, DCBM, or PABM).
 #'   The dimensionality of the embedding of A depends on this model.
 #'   If the model is SBM or DCBM, then the embedding dimension is K.
-#'   If the model is PABM, then the embedding dimension is \expr{K^2}
-#'   and \expr{p = K (K + 1) / 2} and \expr{q = K (K - 1) / 2}.
+#'   If the model is PABM, then the embedding dimension is \eqn{K^2}
+#'   and \eqn{p = K (K + 1) / 2} and \eqn{q = K (K - 1) / 2}.
 #' @param assortative Whether the block model is assortative or disassortative.
 #'   Only valid for SBM and DCBM. This argument is ignored for PABM.
 #'   If assortative is TRUE, then p = K and q = 0.
@@ -14,7 +14,7 @@
 #'   If assortative is an integer, then p is the value of that integer and
 #'   q = K - p.
 #' @return B, the affinity matrix.
-#'   \expr{B[i, j]} approaches 0 asymptotically
+#'   \eqn{B[i, j]} approaches 0 asymptotically
 #'   if i and j are in different communities.
 #' @export
 #'
@@ -24,7 +24,7 @@
 #' n2 <- 20
 #' n <- n1 + n2
 #' p.within <- .5
-#' q.between <- .1
+#' p.between <- .1
 #' P <- matrix(p.between, nrow = n, ncol = n)
 #' P[seq(n1), seq(n1)] <- p.within
 #' P[seq(n1 + 1, n), seq(n1 + 1, n)] <- p.within
@@ -54,7 +54,8 @@ compute.affinity.matrix <- function(A, K = 2L,
   # compute the affinity matrix from the embedding
   B <- abs(tcrossprod(V))
 
-  return(B)
+  return(list(B = B,
+              p = p, q = q))
 }
 
 .model.checks <- function(model, K, assortative) {

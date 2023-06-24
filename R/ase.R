@@ -17,7 +17,7 @@
 #' n2 <- 20
 #' n <- n1 + n2
 #' p.within <- .5
-#' q.between <- .1
+#' p.between <- .1
 #' P <- matrix(p.between, nrow = n, ncol = n)
 #' P[seq(n1), seq(n1)] <- p.within
 #' P[seq(n1 + 1, n), seq(n1 + 1, n)] <- p.within
