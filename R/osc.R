@@ -14,6 +14,8 @@
 #'   If assortative is an integer, then p is the value of that integer and
 #'   q = K - p.
 #' @return clustering, the cluster assignments, and B, the affinity matrix.
+#'   affinity.matrix, the affinity matrix of OSC.
+#'   embedding, the unscaled ASE of A.
 #' @import mclust
 #' @export
 #' @examples
@@ -37,6 +39,7 @@ osc <- function(A,
   # compute the affinity matrix of pairwise dot products
   affinity.out <- compute.affinity.matrix(A, K, model, assortative)
   B <- affinity.out$B
+  V <- affinity.out$V
   p <- affinity.out$p
   q <- affinity.out$q
 
@@ -47,7 +50,8 @@ osc <- function(A,
   clustering <- mclust::Mclust(eigenmap, K)$classification
 
   return(list(clustering = clustering,
-              affinity.matrix = B))
+              affinity.matrix = B,
+              embedding = V))
 }
 
 .normalized.laplacian <- function(W) {

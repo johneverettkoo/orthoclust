@@ -16,6 +16,10 @@
 #' @return B, the affinity matrix.
 #'   \eqn{B[i, j]} approaches 0 asymptotically
 #'   if i and j are in different communities.
+#'   V, first p and last q eigenvectors of A.
+#'   The rows of V that correspond to vertices in two different communities
+#'   approach orthogonality asymptotically.
+#'   p, q, the embedding dimensions.
 #' @export
 #'
 #' @examples
@@ -55,6 +59,7 @@ compute.affinity.matrix <- function(A, K = 2L,
   B <- abs(tcrossprod(V))
 
   return(list(B = B,
+              V = V,
               p = p, q = q))
 }
 
@@ -94,8 +99,8 @@ compute.affinity.matrix <- function(A, K = 2L,
       stop('assortative must be a logical or integer')
     }
   } else if (model %in% c('pabm', 'pasbm')) {
-    p <- K * (K + 1L) %/% 2L
-    q <- K * (K - 1L) %/% 2L
+    p <- (K * (K + 1L)) %/% 2L
+    q <- (K * (K - 1L)) %/% 2L
   } else {
     stop('model must be SBM, DCBM, or PABM')
   }

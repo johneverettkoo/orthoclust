@@ -26,6 +26,8 @@ q = K - p.}
 }
 \value{
 clustering, the cluster assignments, and B, the affinity matrix.
+affinity.matrix, the affinity matrix of OSC.
+embedding, the unscaled ASE of A.
 }
 \description{
 Orthogonal Spectral Clustering

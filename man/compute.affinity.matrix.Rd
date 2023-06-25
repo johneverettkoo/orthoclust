@@ -28,6 +28,10 @@ q = K - p.}
 B, the affinity matrix.
 \eqn{B[i, j]} approaches 0 asymptotically
 if i and j are in different communities.
+V, first p and last q eigenvectors of A.
+The rows of V that correspond to vertices in two different communities
+approach orthogonality asymptotically.
+p, q, the embedding dimensions.
 }
 \description{
 Compute the affinity matrix for orthogonal spectral clustering

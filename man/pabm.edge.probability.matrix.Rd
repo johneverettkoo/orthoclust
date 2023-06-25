@@ -10,7 +10,7 @@ pabm.edge.probability.matrix(groups, popularity.params)
 \item{groups}{A vector of group labels.}
 
 \item{popularity.params}{An n by K matrix of popularity parameters.
-\expr{popularity.params\link{i, k}} is vertex i's affinity to community k.}
+\eqn{popularity.params[i, k]} is vertex i's affinity to community k.}
 }
 \value{
 The n by n edge probability matrix.

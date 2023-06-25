@@ -1,28 +1,18 @@
----
-output: github_document
----
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  fig.path = "man/figures/README-",
-  out.width = "100%",
-  warning = FALSE,
-  comment = NA
-)
-```
 
 # `osc`: An R implementation of Orthogonal Spectral Clustering
 
 <!-- badges: start -->
-[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-[![CRAN status](https://www.r-pkg.org/badges/version/osc)](https://CRAN.R-project.org/package=osc)
+
+[![Lifecycle:
+experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/osc)](https://CRAN.R-project.org/package=osc)
 <!-- badges: end -->
 
-Paper: https://www.tandfonline.com/doi/full/10.1080/10618600.2022.2081576
+Paper:
+<https://www.tandfonline.com/doi/full/10.1080/10618600.2022.2081576>
 
 ## Installation
 
@@ -34,12 +24,13 @@ devtools::install_github('johneverettkoo/osc')
 
 ## Example
 
-This is a basic example of orthogonal spectral clustering applied on the UK faculty network (see the `igraph` package). 
-This is a graph of the friendships among UK faculty. 
-Each vertex also comes with a label regarding the school to which each faculty member belongs. 
-We'll focus on the first three schools. 
+This is a basic example of orthogonal spectral clustering applied on the
+UK faculty network (see the `igraph` package). This is a graph of the
+friendships among UK faculty. Each vertex also comes with a label
+regarding the school to which each faculty member belongs. We’ll focus
+on the first three schools.
 
-```{r example}
+``` r
 library(ggplot2)
 
 data('UKfaculty', package = 'igraphdata')
@@ -60,21 +51,29 @@ ggraph::ggraph(A, layout = 'stress') +
   scale_colour_brewer(palette = 'Set1')
 ```
 
-It was previously shown that the DCBM is a good fit for this graph. 
+<img src="man/figures/README-example-1.png" width="100%" />
 
-```{r}
+It was previously shown that the DCBM is a good fit for this graph.
+
+``` r
 cluster.out <- osc::osc(A, K = K, model = 'dcbm', assortative = TRUE)
 ```
 
-A confusion matrix shows that OSC achieved 91.1\% accuracy.
+A confusion matrix shows that OSC achieved 91.1% accuracy.
 
-```{r}
+``` r
 table(cluster.out$clustering, z)
+   z
+     1  2  3
+  1  7  0 19
+  2 26  0  0
+  3  0 27  0
 ```
 
-A scatterplot of the embedding reveals embedding vectors clustering around three line segments, confirming that the DCBM is a good fit.
+A scatterplot of the embedding reveals embedding vectors clustering
+around three line segments, confirming that the DCBM is a good fit.
 
-```{r}
+``` r
 ggplot() +
   geom_point(aes(x = cluster.out$embedding[, 2],
                  y = cluster.out$embedding[, 3],
@@ -84,3 +83,5 @@ ggplot() +
   theme(legend.position = 'none') +
   coord_fixed()
 ```
+
+<img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />

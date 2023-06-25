@@ -22,8 +22,15 @@ testthat::test_that('draw.graph outputs an adjacency matrix', {
   testthat::expect_true(all(A >= 0))
 })
 
-out <- osc::osc(A, K = 2, model = 'sbm')
+K <- 2
+out.sbm <- osc::osc(A, K = K, model = 'sbm')
+out.pabm <- osc::osc(A, K = K, model = 'pabm')
 
 testthat::test_that('check for outputs of osc', {
-  testthat::expect_true(all(out$clustering %in% seq(2)))
+  testthat::expect_true(all(out.sbm$clustering %in% seq(K)))
+  testthat::expect_equal(nrow(out.sbm$embedding), n)
+  testthat::expect_equal(ncol(out.sbm$embedding), K)
+  testthat::expect_true(all(out.pabm$clustering %in% seq(K)))
+  testthat::expect_equal(nrow(out.pabm$embedding), n)
+  testthat::expect_equal(ncol(out.pabm$embedding), K ^ 2)
 })
