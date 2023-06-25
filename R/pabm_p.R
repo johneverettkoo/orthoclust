@@ -2,7 +2,7 @@
 #'
 #' @param groups A vector of group labels.
 #' @param popularity.params An n by K matrix of popularity parameters.
-#'   \expr{popularity.params[i, k]} is vertex i's affinity to community k.
+#'   \eqn{popularity.params[i, k]} is vertex i's affinity to community k.
 #'
 #' @return The n by n edge probability matrix.
 #'
