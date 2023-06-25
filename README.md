@@ -1,14 +1,14 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# `osc`: An R implementation of Orthogonal Spectral Clustering
+# `orthoclust`: An R implementation of Orthogonal Spectral Clustering
 
 <!-- badges: start -->
 
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![CRAN
-status](https://www.r-pkg.org/badges/version/osc)](https://CRAN.R-project.org/package=osc)
+status](https://www.r-pkg.org/badges/version/orthoclust)](https://CRAN.R-project.org/package=orthoclust)
 <!-- badges: end -->
 
 Paper:
@@ -16,10 +16,10 @@ Paper:
 
 ## Installation
 
-You can install the development version of `osc` like so:
+You can install the development version of \`\` like so:
 
 ``` r
-devtools::install_github('johneverettkoo/osc')
+devtools::install_github('johneverettkoo/orthoclust')
 ```
 
 ## Example
@@ -56,7 +56,7 @@ ggraph::ggraph(A, layout = 'stress') +
 It was previously shown that the DCBM is a good fit for this graph.
 
 ``` r
-cluster.out <- osc::osc(A, K = K, model = 'dcbm', assortative = TRUE)
+cluster.out <- orthoclust::osc(A, K = K, model = 'dcbm', assortative = TRUE)
 ```
 
 A confusion matrix shows that OSC achieved 91.1% accuracy.

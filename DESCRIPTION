@@ -1,14 +1,20 @@
-Package: osc
-Title: An R implementation of orthogonal spectral clustering
+Package: orthoclust
+Title: Orthogonal Spectral Clustering
 Version: 0.0.0.9000
-Authors@R: 
+Authors@R: c(
     person("John", "Koo", , "johnkoo@iu.edu", role = c("aut", "cre"),
-           comment = c(ORCID = "0000-0003-0138-9516"))
-Description: Package for implementing the orthogonal spectral clustering algorithm for linear block models.
+           comment = c(ORCID = "0000-0003-0138-9516")),
+    person("Minh", "Tang", , "mtang8@ncsu.edu", role = "aut"),
+    person("Michael W.", "Trosset", , "mtrosset@indiana.edu", role = "aut")
+  )
+Description: An R package for implementing the orthogonal spectral clustering 
+    algorithm for linear block models. 
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
+Depends: 
+    R (>= 4.0.0)
 Imports: 
     mclust
 Suggests: 
