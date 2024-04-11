@@ -32,10 +32,10 @@
 #' P <- matrix(p.between, nrow = n, ncol = n)
 #' P[seq(n1), seq(n1)] <- p.within
 #' P[seq(n1 + 1, n), seq(n1 + 1, n)] <- p.within
-#' A <- osc::draw.graph(P)
+#' A <- orthoclust::draw.graph(P)
 #'
 #' # compute the affinity matrix
-#' B <- osc::compute.affinity.matrix(A, 2, model = 'sbm')
+#' B <- orthoclust::compute.affinity.matrix(A, K = 2, model = 'sbm')
 compute.affinity.matrix <- function(A, K = 2L,
                                     model = 'pabm',
                                     assortative = TRUE) {

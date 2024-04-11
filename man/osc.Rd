@@ -42,8 +42,8 @@ p.between <- .1
 P <- matrix(p.between, nrow = n, ncol = n)
 P[seq(n1), seq(n1)] <- p.within
 P[seq(n1 + 1, n), seq(n1 + 1, n)] <- p.within
-A <- osc::draw.graph(P)
+A <- orthoclust::draw.graph(P)
 
 # cluster
-B <- osc::osc(A, 2, model = 'sbm')
+out <- orthoclust::osc(A, K = 2, model = 'sbm')
 }

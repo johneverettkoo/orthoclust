@@ -1,7 +1,7 @@
 library(testthat)
-# library(osc)
+# library(orthoclust)
 
-# test_check("osc")
+# test_check("orthoclust")
 
 set.seed(12345)
 n1 <- 20
@@ -12,7 +12,7 @@ p.between <- .1
 P <- matrix(p.between, nrow = n, ncol = n)
 P[seq(n1), seq(n1)] <- p.within
 P[seq(n1 + 1, n), seq(n1 + 1, n)] <- p.within
-A <- osc::draw.graph(P)
+A <- orthoclust::draw.graph(P)
 
 testthat::test_that('draw.graph outputs an adjacency matrix', {
   testthat::expect_equal(nrow(A), n)
@@ -23,8 +23,8 @@ testthat::test_that('draw.graph outputs an adjacency matrix', {
 })
 
 K <- 2
-out.sbm <- osc::osc(A, K = K, model = 'sbm')
-out.pabm <- osc::osc(A, K = K, model = 'pabm')
+out.sbm <- orthoclust::osc(A, K = K, model = 'sbm')
+out.pabm <- orthoclust::osc(A, K = K, model = 'pabm')
 
 testthat::test_that('check for outputs of osc', {
   testthat::expect_true(all(out.sbm$clustering %in% seq(K)))
