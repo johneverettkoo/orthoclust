@@ -10,6 +10,7 @@
 #'
 #' @return An nrow(A) by (p+q) matrix of embedded points
 #' @export
+#' @importFrom methods is
 #'
 #' @examples
 #' # generate a small homogeneous SBM with two communities
@@ -89,15 +90,15 @@ ase <- function(A, p = 2L, q = 0L,
   n <- A.n$n
 
   # verify p and q are integers
-  if (class(p) != 'integer') {
-    if (class(p) == 'numeric') {
+  if (!is(p, 'integer')) {
+    if (is(p, 'numeric')) {
       p <- as.integer(p)
     } else {
       stop('p must be an integer')
     }
   }
-  if (class(q) != 'integer') {
-    if (class(q) == 'numeric') {
+  if (!is(q, 'integer')) {
+    if (is(q, 'numeric')) {
       q <- as.integer(q)
     } else {
       stop('q must be an integer')

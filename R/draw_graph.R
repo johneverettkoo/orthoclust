@@ -10,6 +10,7 @@
 #'
 #' @return A the adjacency matrix sampled from P.
 #' @export
+#' @importFrom stats rbinom rpois rexp
 #'
 #' @examples
 #' # generate a small homogeneous SBM with two communities
