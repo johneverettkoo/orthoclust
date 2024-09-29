@@ -47,3 +47,9 @@ A <- orthoclust::draw.graph(P)
 # cluster
 out <- orthoclust::osc(A, K = 2, model = 'sbm')
 }
+\references{
+Koo, J., Tang, M., and Trosset, M. W. (2022).
+Popularity Adjusted Block Models are Generalized Random Dot Product Graphs.
+\emph{Journal of Computational and Graphical Statistics, 32(1)}, 131–144.
+https://doi.org/10.1080/10618600.2022.2081576
+}
